@@ -1,6 +1,6 @@
 <?php
 
-namespace DynamicConsole;
+namespace DynamicTerminal;
 
 class Chars implements \Iterator
 {
