@@ -1,8 +1,8 @@
 <?php
 
-namespace DynamicConsole\Features;
+namespace DynamicTerminal\Features;
 
-use DynamicConsole\Displayer;
+use DynamicTerminal\Displayer;
 
 class ProgressBar extends Displayer
 {
