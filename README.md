@@ -42,4 +42,5 @@ You can also overwrite content in terminal using `overwrite` method availible on
 
 runnig `HelloWorld.php` script...
 
-![](https://i.ibb.co/W5yGY0N/Captura-de-tela-2022-12-01-012002.png)
+<img src="https://i.ibb.co/W5yGY0N/Captura-de-tela-2022-12-01-012002.png" alt="drawing" width="400"/>
+
