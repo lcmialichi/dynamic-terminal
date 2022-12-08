@@ -6,7 +6,7 @@ class Console
 {
     public function lines()
     {
-        $info = shell_exec('MODE 2> null') ?? shell_exec('tput lines');
+        $info = shell_exec('MODE 2> NUL') ?? shell_exec('tput lines');
         if (strlen($info) > 7) {
             preg_match('/CON.*:(\n[^|]+?){2}(?<lines>\d+)/', $info, $match);
             $info = $match['lines'] ?? 80;
@@ -16,7 +16,7 @@ class Console
 
     public function columns()
     {
-        $info = shell_exec('MODE 2> null') ?? shell_exec('tput cols');
+        $info = shell_exec('MODE 2> NUL') ?? shell_exec('tput cols');
         if (strlen($info) > 7) {
             preg_match('/CON.*:(\n[^|]+?){3}(?<cols>\d+)/', $info, $match);
             $info = $match['cols'] ?? 80;

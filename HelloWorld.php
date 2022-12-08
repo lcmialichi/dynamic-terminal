@@ -57,9 +57,9 @@ $progressBar = new DynamicTerminal\Features\ProgressBar;
 $progressBar->output("lets run progress bar? ",lineBreaker: false);
 $progressBar->output("[yes/no] ", "yellow");
 $response = $progressBar->waitForInteraction();
-$progressBar->output("Starting progress bar demo...\n", "green");
 
 if ($response == "yes") {
+    $progressBar->output("Starting progress bar demo...\n", "green");
     $progressBar->start(100);
     $progressBar->setBarScale(40);
 
