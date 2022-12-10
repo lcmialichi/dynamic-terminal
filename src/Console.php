@@ -56,22 +56,10 @@ class Console
 
     public static function argument(string|int $arg)
     {
-
         if (is_int($arg)) {
             return $_SERVER['argv'][$arg] ?? null;
         }
 
-        $input =  array_values(array_filter(
-            array_values($_SERVER['argv']),
-            function ($item) use ($arg) {
-                return beginsWith($arg . "=", $item);
-            }
-        ));
-
-        if (!empty($input)) {
-            return ltrim($input[0], "{$arg}=");
-        }
-
-        return null;
+       return false;
     }
 }
