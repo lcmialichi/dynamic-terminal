@@ -4,6 +4,20 @@ namespace DynamicTerminal;
 
 class Console
 {
+    public function getCurrentUser()
+    {
+        return get_current_user();
+    }
+
+    public function getOption(string|array $option)
+    {
+        if (is_array($option)) {
+            $option = implode(":", $option);
+        }
+
+        return  getopt("$option:");
+    }
+
     public function lines()
     {
         $info = shell_exec('MODE 2> NUL') ?? shell_exec('tput lines');
@@ -11,7 +25,7 @@ class Console
             preg_match('/CON.*:(\n[^|]+?){2}(?<lines>\d+)/', $info, $match);
             $info = $match['lines'] ?? 80;
         }
-        return $info; 
+        return $info;
     }
 
     public function columns()

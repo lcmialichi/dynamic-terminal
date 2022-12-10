@@ -53,7 +53,7 @@ $chars = [
 */
 
 $progressBar = new DynamicTerminal\Features\ProgressBar;
-
+var_dump($progressBar->console()->getOption(["b","t"]));exit;
 $progressBar->output("lets run progress bar? ",lineBreaker: false);
 $progressBar->output("[yes/no] ", "yellow");
 $response = $progressBar->waitForInteraction();
