@@ -4,12 +4,12 @@ namespace DynamicTerminal;
 
 class Console
 {
-    public function getCurrentUser()
+    public function getCurrentUser() : string
     {
         return get_current_user();
     }
 
-    public function getOption(string|array $option)
+    public function getOption(string|array $option) : array
     {
         if (is_array($option)) {
             $option = implode(":", $option);
