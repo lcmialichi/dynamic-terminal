@@ -53,7 +53,7 @@ $chars = [
 */
 
 $progressBar = new DynamicTerminal\Features\ProgressBar;
-var_dump($progressBar->console()->getOption(["b","t"]));exit;
+
 $progressBar->output("lets run progress bar? ",lineBreaker: false);
 $progressBar->output("[yes/no] ", "yellow");
 $response = $progressBar->waitForInteraction();
@@ -81,7 +81,7 @@ $displayer = new Displayer();
 
 $consoleY = floor($console->lines() / 2);
 $consoleX = floor(($console->columns() - $targetLength) / 2);
-
+exit;
 $displayer->setOverwrite($overwrite);
 $displayer->setOverwriteScale(
     line: ($line = $positionY ?? $consoleY) < 0 ? 0 : $line,

@@ -1,15 +1,20 @@
 <?php
 
 namespace DynamicTerminal;
-
+/**
+ * 
+ * @todo remover redundancia de codigo igual na funcao lines e columns
+ * @todo Verificar o porque em um terminal bash só é retornado 3000 linhas
+ * @todo separar execuçoes do console com o output (vamos manter o SOLID ne :D)
+ */
 class Console
 {
-    public function getCurrentUser() : string
+    public function getCurrentUser(): string
     {
         return get_current_user();
     }
 
-    public function getOption(string|array $option) : array
+    public function getOption(string|array $option): array
     {
         if (is_array($option)) {
             $option = implode(":", $option);
@@ -20,22 +25,30 @@ class Console
 
     public function lines()
     {
-        $info = shell_exec('MODE 2> NUL') ?? shell_exec('tput lines');
-        if (strlen($info) > 7) {
-            preg_match('/CON.*:(\n[^|]+?){2}(?<lines>\d+)/', $info, $match);
-            $info = $match['lines'] ?? 80;
+
+        if ($this->commandExists("MODE")) {
+            $info = $this->readFromProcess("MODE CON");
+            if (null === $info || !preg_match('/--------+\r?\n.+?(\d+)\r?\n.+?(\d+)\r?\n/', $info, $matches)) {
+                return null;
+            }
+            return $matches[1];
         }
-        return $info;
+
+        return $info = $this->readFromProcess("tput lines");
     }
 
     public function columns()
     {
-        $info = shell_exec('MODE 2> NUL') ?? shell_exec('tput cols');
-        if (strlen($info) > 7) {
-            preg_match('/CON.*:(\n[^|]+?){3}(?<cols>\d+)/', $info, $match);
-            $info = $match['cols'] ?? 80;
+       
+        if ($this->commandExists("MODE")) {
+            $info = $this->readFromProcess("MODE CON");
+            if (null === $info || !preg_match('/--------+\r?\n.+?(\d+)\r?\n.+?(\d+)\r?\n/', $info, $matches)) {
+                return null;
+            }
+            return $matches[2];
         }
-        return $info;
+
+        return $info = $this->readFromProcess("tput cols");
     }
 
     public function removeLastLine()
@@ -60,6 +73,44 @@ class Console
             return $_SERVER['argv'][$arg] ?? null;
         }
 
-       return false;
+        return false;
+    }
+
+    private function commandExists(string $command)
+    {
+
+        $whereIsCommand = (PHP_OS == 'WINNT') ? 'where' : 'which';
+        $return = shell_exec(sprintf("%s %s", $whereIsCommand, escapeshellarg($command)));
+        return !empty($return);
+    }
+
+    public function isRuningFromTerminal()
+    {
+        return php_sapi_name() === "cli";
+    }
+
+    public function readFromProcess(string $command)
+    {
+
+        if (!\function_exists('proc_open')) {
+            return null;
+        }
+
+        $descriptorspec = [
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ];
+
+        $process = proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
+        if (!\is_resource($process)) {
+            return null;
+        }
+
+        $info = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        proc_close($process);
+
+        return $info;
     }
 }
